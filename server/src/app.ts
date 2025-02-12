@@ -1,13 +1,15 @@
 import express, { Request, Response } from "express"
 import cors from "cors"
 import { userRoutes } from "./routes"
-import { errorHandler } from "./middlewares"
+import { errorHandler, isAuthenticatedUser } from "./middlewares"
+import cookieParser from "cookie-parser"
 
 const versionUrl = "/api/v1"
 
 const app = express()
 
 app.use(express.json())
+app.use(cookieParser())
 app.use(
   cors({
     origin: "*",
@@ -15,10 +17,11 @@ app.use(
   })
 )
 
+app.use(isAuthenticatedUser)
+
 app.use(`${versionUrl}/user`, userRoutes)
 
 app.use(errorHandler)
-
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + Typescript Server")
 })

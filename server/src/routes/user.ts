@@ -1,12 +1,21 @@
 import express from "express"
-import { registerUser } from "../controllers"
+import {
+  handleRefreshToken,
+  loginUser,
+  logoutUser,
+  registerUser,
+} from "../controllers"
 import { validateData } from "../middlewares"
-import { userRegistrationSchema } from "../schemas"
+import { userLoginSchema, userRegistrationSchema } from "../schemas"
 
 const router = express.Router()
 
 router
   .route("/register")
   .post(validateData(userRegistrationSchema), registerUser)
+
+router.route("/login").post(validateData(userLoginSchema), loginUser)
+router.route("/logout").put(logoutUser)
+router.route("/refresh-token").get(handleRefreshToken)
 
 export default router
