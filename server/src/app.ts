@@ -1,5 +1,7 @@
 import express, { Request, Response } from "express"
 import cors from "cors"
+import { userRoutes } from "./routes"
+import { errorHandler } from "./middlewares"
 
 const versionUrl = "/api/v1"
 
@@ -12,6 +14,10 @@ app.use(
     credentials: true,
   })
 )
+
+app.use(`${versionUrl}/user`, userRoutes)
+
+app.use(errorHandler)
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + Typescript Server")
