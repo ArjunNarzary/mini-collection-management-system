@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express"
 import cors from "cors"
-import { userRoutes } from "./routes"
+import { customerRoutes, userRoutes } from "./routes"
 import { errorHandler, isAuthenticatedUser } from "./middlewares"
 import cookieParser from "cookie-parser"
 
@@ -20,6 +20,7 @@ app.use(
 app.use(isAuthenticatedUser)
 
 app.use(`${versionUrl}/user`, userRoutes)
+app.use(`${versionUrl}/customer`, customerRoutes)
 
 app.use(errorHandler)
 app.get("/", (req: Request, res: Response) => {

@@ -100,7 +100,7 @@ export const loginUser = asyncHandler(
     const generateAccessToken = generateToken(
       { _id: _id as string, email: (_source as IUser).email },
       process.env.ACCESS_TOKEN_SECRET as string,
-      "15m"
+      "1d"
     )
 
     const user = { ...(_source as IUser), _id: _id, password: "" }
@@ -130,7 +130,7 @@ export const handleRefreshToken = asyncHandler(
     const { token } = req.cookies
 
     if (!token) {
-      const err = new CustomError("Please login first", 401)
+      const err = new CustomError("Please login first", 400)
       next(err)
       return
     }
@@ -141,7 +141,7 @@ export const handleRefreshToken = asyncHandler(
     )
 
     if (!decoded) {
-      const err = new CustomError("Token Expired", 401)
+      const err = new CustomError("Token Expired", 400)
       next(err)
       return
     }
@@ -149,7 +149,7 @@ export const handleRefreshToken = asyncHandler(
     const result = await findUserById((<any>decoded)._id)
 
     if (result.hits.hits.length === 0) {
-      const err = new CustomError("Unauthorized user", 401)
+      const err = new CustomError("Unauthorized user", 400)
       next(err)
       return
     }
