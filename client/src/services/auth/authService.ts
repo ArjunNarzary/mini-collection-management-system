@@ -2,7 +2,7 @@ import { IDefaultResponse, ILoginPayload, ILoginResponse } from "@/interfaces"
 import { API_ENDPOINTS } from "../apiEndpoints"
 import { apiSlice } from "../apiSlice"
 
-export const authService = apiSlice.injectEndpoints({
+const authService = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     loginUser: builder.mutation<ILoginResponse, ILoginPayload>({
       query: (credentials: ILoginPayload) => ({
@@ -19,7 +19,7 @@ export const authService = apiSlice.injectEndpoints({
       }),
     }),
 
-    refreshToken: builder.query<IDefaultResponse, ILoginPayload>({
+    refreshToken: builder.query<IDefaultResponse, void>({
       query: () => ({
         url: API_ENDPOINTS.auth.refreshToken,
         method: "GET",

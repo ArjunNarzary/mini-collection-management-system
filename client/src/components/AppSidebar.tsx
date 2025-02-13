@@ -1,4 +1,3 @@
-import React from "react"
 import {
   Sidebar,
   SidebarContent,
@@ -38,7 +37,6 @@ const AppSidebar = () => {
       <SidebarHeader className="text-xl font-bold">Mini CMS</SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          {/* <SidebarGroupLabel>Application</SidebarGroupLabel> */}
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

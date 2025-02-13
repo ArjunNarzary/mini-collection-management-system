@@ -100,7 +100,7 @@ export const loginUser = asyncHandler(
     const generateAccessToken = generateToken(
       { _id: _id as string, email: (_source as IUser).email },
       process.env.ACCESS_TOKEN_SECRET as string,
-      "1d"
+      "15m"
     )
 
     const user = { ...(_source as IUser), _id: _id, password: "" }

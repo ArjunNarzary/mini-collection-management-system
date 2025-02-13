@@ -7,5 +7,7 @@ export const API_ENDPOINTS = {
   },
   customer: {
     addCustomer: "/customer",
+    getCustomer: (id: string) => `/customer/${id}`,
+    getAgentCustomers: `/customer/agent`,
   },
 }
