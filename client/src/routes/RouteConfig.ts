@@ -1,5 +1,6 @@
 import { DashboardContainer, LoginContainer } from "@/containers"
 import { AppPath } from "./RouteName"
+import { JSX } from "react"
 
 export interface IRouteConfig {
   path: string
