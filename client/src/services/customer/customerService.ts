@@ -27,4 +27,5 @@ const customerService = apiSlice.injectEndpoints({
   }),
 })
 
-export const { useGetAllCustomersQuery } = customerService
+export const { useGetAllCustomersQuery, useAddCustomerMutation } =
+  customerService

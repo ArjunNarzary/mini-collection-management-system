@@ -34,8 +34,7 @@ export interface APIError {
   }
 }
 
-//Customer
-
+// Customer
 export type IPAYMENTSTATUS = "COMPLETED" | "PENDING"
 
 export interface ICustomerPayload {
