@@ -1,0 +1,123 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  AGENT
+}
+
+enum PaymentStatus {
+  PENDING
+  ONGOING
+  COMPLETED
+  OVERDUE
+}
+
+enum LoanType {
+  LUMPSUM
+  INSTALLMENT
+}
+
+enum LoanStatus {
+  ACTIVE
+  CLOSED
+}
+
+enum InstallmentStatus {
+  PENDING
+  PAID
+  OVERDUE
+}
+
+model User {
+  id            String        @id @default(uuid())
+  name          String
+  username      String
+  email         String
+  password      String
+  role          Role
+  organization  Organization?
+  customers     Customer[]    @relation("AgentCustomer")
+  customerAdded Customer[]    @relation("CustomerAdded")
+  Loan          Loan[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Organization {
+  id        String   @id @default(uuid())
+  name      String
+  adminId   String   @unique
+  admin     User     @relation(fields: [adminId], references: [id])
+  Loan      Loan[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Customer {
+  id            String        @id @default(uuid())
+  name          String
+  email         String        @unique
+  addressLine1  String
+  addressLine2  String?
+  city          String
+  state         String
+  country       String
+  contactNumber String
+  paymentStatus PaymentStatus
+  agentId       String
+  agent         User          @relation("AgentCustomer", fields: [agentId], references: [id])
+  addedById     String
+  addedBy       User          @relation("CustomerAdded", fields: [addedById], references: [id])
+  loan          Loan[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Loan {
+  id                 String        @id @default(uuid())
+  customerId         String
+  customer           Customer      @relation(fields: [customerId], references: [id])
+  agentId            String
+  agent              User          @relation(fields: [agentId], references: [id])
+  organizationId     String
+  organization       Organization  @relation(fields: [organizationId], references: [id])
+  type               LoanType
+  interestRate       Float
+  duration           Int
+  amount             Float
+  precessingFee      Float
+  totalPayableAmount Float
+  totalPaid          Float         @default(0)
+  status             LoanStatus    @default(ACTIVE)
+  installment        Installment[]
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+}
+
+model Installment {
+  id               String            @id @default(uuid())
+  loanId           String
+  loan             Loan              @relation(fields: [loanId], references: [id])
+  penaltyCharge    Float             @default(0)
+  predefinedAmount Float
+  totalAmountPaid  Float
+  dueDate          DateTime
+  paymentDate      DateTime
+  status           InstallmentStatus @default(PENDING)
+  feedback         String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+}
