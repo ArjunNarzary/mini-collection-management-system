@@ -1,3 +1,4 @@
-import user from "./user.route"
+import userRoutes from "./user.route"
+import organisationRoutes from "./organizarion.route"
 
-export { user as userRouter }
+export { userRoutes, organisationRoutes }

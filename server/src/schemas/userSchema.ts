@@ -6,7 +6,7 @@ export const userRegistrationSchema = z.object({
   email: z.string().email("Please provide valid email"),
   role: z.enum(ROLES, {
     required_error: "Role is required",
-    invalid_type_error: "Role must be either ADMIN or BROKER",
+    invalid_type_error: "Role must be either ADMIN or AGENT",
   }),
   password: z.string().min(8, "Password must be atleast 8 characters"),
 })
